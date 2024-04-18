@@ -84,7 +84,7 @@ class S3PRL_Feat2Wav(object):
         c = c.unsqueeze(0).float()
 
         start = time.time()
-        outs, _ = self.model(c, lens, spk_embs=None)
+        outs, _ , _ = self.model(c, lens, spk_embs=None) # outs: if use diffusion / TACO2 model, return 3 variables
         out = outs[0]
         y, sr = self.vocoder.decode(out)
         rtf = (time.time() - start) / (len(y) / self.config["sampling_rate"])
