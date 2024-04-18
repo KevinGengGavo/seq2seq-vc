@@ -16,13 +16,13 @@ n_jobs=16      # number of parallel jobs in feature extraction
 conf=conf/aas_vc.melmelmel.v1.yaml
 
 # dataset configuration
-db_root=../vc1/downloads
+db_root=../../../../../data/cmu_arctic
 dumpdir=dump                # directory to dump full features
 srcspk=clb                  # available speakers: "clb" "bdl"
 trgspk=slt                  # available speakers: "slt" "rms"
 num_train=932
 stats_ext=h5
-norm_name=                  # used to specify normalized data.
+norm_name='self'                  # used to specify normalized data.
                             # Ex: `judy` for normalization with pretrained model, `self` for self-normalization
 
 src_feat=mel

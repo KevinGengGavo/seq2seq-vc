@@ -105,7 +105,14 @@ def main():
 
     trgspk = args.trgspk
     gt_root = os.path.join(args.data_root, "wav")
-    transcription_path = os.path.join(args.data_root, "etc", "arctic.data")
+    
+    try:
+        transcription_path = os.path.join(args.data_root, "etc", "arctic.data")
+        assert os.path.exists(transcription_path)
+    except:
+        transcription_path = os.path.join(args.data_root, "etc", "txt.done.data") # can't find arctic.data, use txt.done.data instead
+        assert os.path.exists(transcription_path)
+        
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
     # load f0min and f0 max
