@@ -29,7 +29,7 @@ Modifiable arguments:
 ## Decoding & evaluation
 
 ```
-./run.sh --stage 4 --stop_stage 5 --norm_name self --tag <experiment_tag_name>
+./run.sh --stage 4 --stop_stage 5 --tag <experiment_tag_name>
 ```
 
 - Stage 4: **First stage** decoding (conversion). In this stage, the converted mel spectrograms and waveforms are saved in `exp/<srcspk>_<trgspk>_<num_train_utterances>_<tag>/results/checkpoint-XXsteps/<srcspk>_<set>/out.X`.
