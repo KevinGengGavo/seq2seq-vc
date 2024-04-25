@@ -1,14 +1,15 @@
 #!/bin/bash
 
+# Copyright 2024 Haopeng Geng (University of Tokyo)
 # Copyright 2022 Wen-Chin Huang (Nagoya University)
 #  MIT License (https://opensource.org/licenses/MIT)
 
 # shellcheck disable=SC1091
 . ./path.sh || exit 1;
 
-num_dev=50
-num_eval=50
-num_train=591
+num_dev=2
+num_eval=2
+num_train=9
 train_set="train_nodev"
 dev_set="dev"
 eval_set="eval"
@@ -40,7 +41,7 @@ set -euo pipefail
 
 # check speaker
 available_spks=(
-    "V000" "V001_SS" "V001_S1" "V001_S2"
+    "V000" "V001_SS" "V001_S1" "V001_S2" "B119004"
 )
 if ! echo "${available_spks[*]}" | grep -q "${spk}"; then
     echo "Specified speaker ${spk} is not available."
