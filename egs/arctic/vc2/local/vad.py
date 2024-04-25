@@ -1,6 +1,8 @@
 # Copyright (c) [2024] Haopeng Geng, University of Tokyo
 # MIT License (https://opensource.org/licenses/MIT)
 
+# For long duration audio, VAD the start and end timestamp and make into segments
+
 from rVADfast.process import rVADfast_multi_process
 import sys
 import argparse
@@ -22,7 +24,6 @@ def main():
     else:
         os.system('rm -r ' + args.vad_dir)
         os.makedirs(args.vad_dir)
-        
         
     # get all wav files from scp file
     with open(args.scp_file, 'r') as f:
@@ -46,6 +47,9 @@ def main():
             with open(Path(args.vad_dir) / Path(ids[i] + '_vad.txt'), 'r') as f:
                 f.readline() # skip header
                 start = f.readline().split(',')[0] # start time fo first segment
+                # remove \n for start
+                if start[-1] == '\n':
+                    start = start[:-1]
                 end = f.readline().split(',')[-1] # end time of last segment
                 # print(start, end)
                 # save segments with start and end only in segments_path, format: <id> <id> <start> <end>
