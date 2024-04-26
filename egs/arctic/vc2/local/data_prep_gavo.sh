@@ -7,9 +7,9 @@
 # shellcheck disable=SC1091
 . ./path.sh || exit 1;
 
-num_dev=4
-num_eval=5
-num_train=50
+num_dev=10
+num_eval=9
+num_train=40
 train_set="train_nodev"
 dev_set="dev"
 eval_set="eval"
