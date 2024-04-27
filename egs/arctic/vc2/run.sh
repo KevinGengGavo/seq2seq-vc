@@ -11,16 +11,16 @@ stage=-1       # stage to start
 stop_stage=100 # stage to stop
 verbose=1      # verbosity level (lower is less info)
 n_gpus=1       # number of gpus in training
-n_jobs=16      # number of parallel jobs in feature extraction
+n_jobs=2      # number of parallel jobs in feature extraction
 
-conf=conf/aas_vc.melmelmel.v1.yaml
+conf=conf/shdw_aas_vc.melmelmel_perf_2.v2.yaml
 
 # dataset configuration
-db_root=../../../../../data/cmu_arctic
+db_root=/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc2/downloads
 dumpdir=dump                # directory to dump full features
-srcspk=clb                  # available speakers: "clb" "bdl"
-trgspk=slt                  # available speakers: "slt" "rms"
-num_train=932
+srcspk=B119004                  # available speakers: "V000" "V001_S1" "V001_S2" "V001_SS" "B119004"
+trgspk=V001_SS_B119004                # available speakers: "V000" "V001_S1" "V001_S2" "V001_SS" 
+num_train=50
 stats_ext=h5
 norm_name='self'                  # used to specify normalized data.
                             # Ex: `judy` for normalization with pretrained model, `self` for self-normalization
@@ -86,12 +86,12 @@ fi
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     echo "stage 0: Data preparation"
     for spk in ${srcspk} ${trgspk}; do
-        local/data_prep.sh \
+        local/data_prep_gavo.sh \
             --train_set "${spk}_train_${num_train}" \
             --dev_set "${spk}_dev" \
             --eval_set "${spk}_eval" \
             --num_train ${num_train} \
-            "${db_root}/cmu_us_${spk}_arctic" "${spk}" data
+            "${db_root}/${spk}" "${spk}" data
     done
 fi
 
