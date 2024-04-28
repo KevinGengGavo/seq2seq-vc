@@ -9,9 +9,9 @@ freeze-mods: null
 #                   INFERENCE SETTING                     #
 ###########################################################
 vocoder:
-    checkpoint: ./downloads/pwg_slt/checkpoint-400000steps.pkl
-    config: ./downloads/pwg_slt/config.yml
-    stats: ./downloads/pwg_slt/stats.h5
+    checkpoint: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/checkpoint-250000steps.pkl
+    config: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/config.yml
+    stats: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/stats.h5
 inference:
     threshold: 0.5    # threshold to stop the generation
     maxlenratio: 6.0 # maximum length of generated samples = input length * maxlenratio
@@ -43,6 +43,15 @@ train_max_steps: 50000                 # Number of training steps.
 save_interval_steps: 5000               # Interval steps to save checkpoint.
 eval_interval_steps: 100               # Interval steps to evaluate the network.
 log_interval_steps: 10                 # Interval steps to record the training log.
+
+###########################################################
+#                      LOSS SETTING                       #
+###########################################################
+trainer_type: ARVCTrainer
+collater_type: ARVCCollater
+criterions:
+    "Seq2SeqLoss":
+        bce_pos_weight: 10.0
 
 ###########################################################
 #                      LOSS SETTING                       #

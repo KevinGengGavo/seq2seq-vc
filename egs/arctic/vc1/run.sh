@@ -13,7 +13,7 @@ verbose=1      # verbosity level (lower is less info)
 n_gpus=1       # number of gpus in training
 n_jobs=16      # number of parallel jobs in feature extraction
 
-conf=conf/vtn.v1.yaml
+conf=./conf/vtn.tts_pt.v1.yaml
 
 # dataset configuration
 db_root=../../../../../data/cmu_arctic
@@ -22,7 +22,7 @@ srcspk=clb                # available speakers: "clb" "bdl"
 trgspk=slt                  # available speakers: "slt" "rms"
 num_train=932
 stats_ext=h5
-norm_name="judy"                  # used to specify normalized data.
+norm_name="ljspeech"                  # used to specify normalized data.
                             # Ex: `judy` for normalization with pretrained model, `self` for self-normalization
 src_feat=mel
 trg_feat=mel
