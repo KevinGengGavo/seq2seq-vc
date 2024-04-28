@@ -1,3 +1,10 @@
+## Exp notes by Kevin:
+`egs/arctic/vc2/exp/B119004_V001_SS_B119004_50_shdw_aas_vc.melmelmel.v1`
++ Original training conf for GAVO_Shadowing Dataset
+`egs/arctic/vc2/conf/shdw_aas_vc.melmelmel_perf_2.v2.yaml`
++ Post_encoder_reduction_factor: 2 -> Base on paper will get no better result :(
+
+
 # Parallel one-to-one non-autoregreseive (non-AR) seq2seq VC recipe using the CMU ARCTIC dataset
 
 2023.09.
