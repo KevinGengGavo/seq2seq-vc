@@ -1,4 +1,4 @@
-# Copyright (c) [2024] Haopeng Geng, University of Tokyo
+# Copyright (c) [2024] Haopeng Geng, The University of Tokyo
 # MIT License (https://opensource.org/licenses/MIT)
 
 import sys
