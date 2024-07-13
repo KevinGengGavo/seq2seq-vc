@@ -24,7 +24,7 @@ from seq2seq_vc.utils import read_hdf5, write_hdf5
 from seq2seq_vc.utils.plot import plot_attention, plot_generated_and_ref_2d, plot_1d
 from seq2seq_vc.vocoder import Vocoder
 from seq2seq_vc.vocoder.s3prl_feat2wav import S3PRL_Feat2Wav
-from seq2seq_vc.vocoder.ppg_vc_s3prl_feat2wav import PPG_Feat2Wav
+# from seq2seq_vc.vocoder.ppg_vc_s3prl_feat2wav import PPG_Feat2Wav
 # from seq2seq_vc.vocoder.encodec import EnCodec_decoder
 from seq2seq_vc.utils.types import str2bool
 from seq2seq_vc.utils.duration_calculator import DurationCalculator
@@ -245,17 +245,17 @@ def main():
                 ],  # this is used to denormalized the converted features,
                 device,
             )
-        elif vocoder_type == "s3prl_vc_ppg_sxliu_2mel_2wav":
-            # todo
-            # Though I wrote this as vocoder, it's actally a PPG_Feat2Mel,
-            # the vocoder we use default HifiGAN.
-            vocoder = PPG_Feat2Wav(
-                config["vocoder"]["ppg2mel_decoder"]['checkpoint'],
-                config["vocoder"]['ppg2mel_decoder']['config'],
-                config["vocoder"]['ppg2mel_decoder']['stats'],
-                config["trg_stats"],  # this is used to denormalized the converted features,
-                device,
-            )
+        # elif vocoder_type == "s3prl_vc_ppg_sxliu_2mel_2wav":
+        #     # todo
+        #     # Though I wrote this as vocoder, it's actally a PPG_Feat2Mel,
+        #     # the vocoder we use default HifiGAN.
+        #     vocoder = PPG_Feat2Wav(
+        #         config["vocoder"]["ppg2mel_decoder"]['checkpoint'],
+        #         config["vocoder"]['ppg2mel_decoder']['config'],
+        #         config["vocoder"]['ppg2mel_decoder']['stats'],
+        #         config["trg_stats"],  # this is used to denormalized the converted features,
+        #         device,
+        #     )
          
         elif vocoder_type == "encodec":
             vocoder = EnCodec_decoder(
