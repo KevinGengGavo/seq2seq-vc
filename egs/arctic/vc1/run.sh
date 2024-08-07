@@ -18,9 +18,10 @@ conf=./conf/vtn.v1.yaml
 # dataset configuration
 db_root=../../../../../data/cmu_arctic
 dumpdir=dump                # directory to dump full features
-srcspk=clb                # available speakers: "clb" "bdl"
-trgspk=slt                  # available speakers: "slt" "rms"
-num_train=932
+
+srcspk=B119004                  # available speakers: B119004
+trgspk=V001_SS_B119004                  # available speakers: V001_SS_B119004
+num_train=40
 stats_ext=h5
 norm_name="self"                  # used to specify normalized data.
                             # Ex: `judy` for normalization with pretrained model, `self` for self-normalization

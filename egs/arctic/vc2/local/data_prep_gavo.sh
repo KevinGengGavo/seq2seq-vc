@@ -49,6 +49,7 @@ set -euo pipefail
 #     exit 1
 # fi
 
+
 [ ! -e "${data_dir}/all" ] && mkdir -p "${data_dir}/all"
 
 # set filenames

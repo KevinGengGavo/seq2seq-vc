@@ -16,7 +16,8 @@ n_jobs=16      # number of parallel jobs in feature extraction
 conf=conf/vtn.tts_pt.v1.yaml
 
 # dataset configuration
-arctic_db_root=../../arctic/vc1/downloads       # default saved here
+
+arctic_db_root=/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads      # default saved here
 db_root=/home/kevingenghaopeng/data/l2arctic_release_v5.0 # PLEASE CHANGE THIS
 dumpdir=dump                                    # directory to dump full features
 srcspk=TXHC
@@ -71,6 +72,11 @@ if [ ${stage} -le -1 ] && [ ${stop_stage} -ge -1 ]; then
     utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_bdl/checkpoint-400000steps.pkl"
     utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_bdl/config.yml"
     utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_bdl/stats.h5"
+
+    # download pretrained vocoder for THXC 
+    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_TXHC/checkpoint-400000steps.pkl"
+    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_TXHC/config.yml"
+    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_TXHC/stats.h5"
 
     # download npvc model
     utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "s3prl-vc-ppg_sxliu/checkpoint-50000steps.pkl"
