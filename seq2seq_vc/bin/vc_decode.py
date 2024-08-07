@@ -24,10 +24,10 @@ from seq2seq_vc.utils import read_hdf5, write_hdf5
 from seq2seq_vc.utils.plot import plot_attention, plot_generated_and_ref_2d, plot_1d
 from seq2seq_vc.vocoder import Vocoder
 from seq2seq_vc.vocoder.s3prl_feat2wav import S3PRL_Feat2Wav
+# from seq2seq_vc.vocoder.ppg_vc_s3prl_feat2wav import PPG_Feat2Wav
 # from seq2seq_vc.vocoder.encodec import EnCodec_decoder
 from seq2seq_vc.utils.types import str2bool
 from seq2seq_vc.utils.duration_calculator import DurationCalculator
-
 
 def main():
     """Run decoding process."""
@@ -125,6 +125,11 @@ def main():
             "you need to specify either feats-scp or dumpdir."
         ),
     )
+    parser.add_argument(
+        "--input_wavdir",
+        type=str,
+        help="directory including input wav files. for PPG-VC style F0 and speaker embedding extraction.",
+    )
     args = parser.parse_args()
 
     # set logger
@@ -149,7 +154,8 @@ def main():
     if not os.path.exists(args.outdir):
         os.makedirs(args.outdir)
 
-    # load config
+    # load confi
+    # import pdb; pdb.set_trace()
     if args.config is None:
         dirname = os.path.dirname(args.checkpoint)
         args.config = os.path.join(dirname, "config.yml")
@@ -165,7 +171,7 @@ def main():
         "mean": read_hdf5(args.trg_stats, f"{args.trg_feat_type}_mean"),
         "scale": read_hdf5(args.trg_stats, f"{args.trg_feat_type}_scale"),
     }
-
+    
     # check arguments
     if (args.feats_scp is not None and args.dumpdir is not None) or (
         args.feats_scp is None and args.dumpdir is None
@@ -219,12 +225,13 @@ def main():
     model = model.eval().to(device)
     logging.info(f"Loaded model parameters from {args.checkpoint}.")
 
+    
     # check autoregressive or non-autoregressive
     if model_class in seq2seq_vc.models.AR_VC_MODELS:
         ar = True
     elif model_class in seq2seq_vc.models.NAR_VC_MODELS:
         ar = False
-
+    
     # load vocoder if provided
     if config.get("vocoder", False):
         vocoder_type = config["vocoder"].get("vocoder_type", "")
@@ -238,6 +245,18 @@ def main():
                 ],  # this is used to denormalized the converted features,
                 device,
             )
+        # elif vocoder_type == "s3prl_vc_ppg_sxliu_2mel_2wav":
+        #     # todo
+        #     # Though I wrote this as vocoder, it's actally a PPG_Feat2Mel,
+        #     # the vocoder we use default HifiGAN.
+        #     vocoder = PPG_Feat2Wav(
+        #         config["vocoder"]["ppg2mel_decoder"]['checkpoint'],
+        #         config["vocoder"]['ppg2mel_decoder']['config'],
+        #         config["vocoder"]['ppg2mel_decoder']['stats'],
+        #         config["trg_stats"],  # this is used to denormalized the converted features,
+        #         device,
+        #     )
+         
         elif vocoder_type == "encodec":
             vocoder = EnCodec_decoder(
                 config[
@@ -255,7 +274,6 @@ def main():
                     "trg_stats"
                 ],  # this is used to denormalized the converted features,
             )
-
     # build duration calculator in teacher-forcing mode
     if args.use_teacher_forcing:
         duration_calculator = DurationCalculator()
@@ -264,7 +282,6 @@ def main():
     with torch.no_grad(), tqdm(dataset, desc="[decode]") as pbar:
         for idx, batch in enumerate(pbar, 1):
             start_time = time.time()
-
             if ar:
                 if args.use_teacher_forcing:
                     utt_id = batch["utt_id"]
@@ -306,6 +323,9 @@ def main():
                 outs, d_outs = model.inference(x, dp_input=dp_input)
                 duration = [str(int(d)) for d in d_outs.cpu().numpy()]
 
+            # # denormalize outs based on trg_stats
+            # import pdb; pdb.set_trace()
+            # outs = outs.cpu() * config["trg_stats"]["scale"] + config["trg_stats"]["mean"]
             logging.info(
                 "inference speed = %.1f frames / sec."
                 % (int(outs.size(0)) / (time.time() - start_time))
@@ -338,8 +358,23 @@ def main():
                 args.trg_feat_type,
                 outs.cpu().numpy().astype(np.float32),
             )
-
+            
             # write waveform if vocoder is provided
+            # if vocoder_type == "s3prl_vc_ppg_sxliu_2mel_2wav":
+            #     # use utt_id to get the source wav
+            #     assert args.input_wavdir is not None
+                
+            #     utt_id = batch["utt_id"]
+            #     utt_wav = os.path.join(args.input_wavdir, f"{utt_id}.wav")
+            #     # load wav 
+            #     src_wav, sr = sf.read(utt_wav)
+            #     # change input features to tensor
+            #     x = batch["src_feat"]
+            #     x = torch.tensor(x, dtype=torch.float).to(device)
+            #     src_wav = torch.tensor(src_wav, dtype=torch.float).to(device)
+            #     import pdb; pdb.set_trace()
+            #     outs, _ = model.inference(x, src_wav=src_wav)
+            #     continue
             if config.get("vocoder", False):
 
                 if not os.path.exists(os.path.join(config["outdir"], "wav")):

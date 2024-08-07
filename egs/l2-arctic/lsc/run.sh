@@ -17,7 +17,7 @@ conf=conf/vtn.tts_pt.v1.ppg_sxliu.yaml
 
 # dataset configuration
 arctic_db_root=../../arctic/vc1/downloads       # default saved here
-db_root=/home/kevingenghaopeng/data/l2arctic_release_v5.0  # PLEASE CHANGE THIS
+db_root=/home/kevingenghaopeng/data/l2arctic_release_v5.0 # PLEASE CHANGE THIS
 dumpdir=dump                                    # directory to dump full features
 srcspk=TXHC
 trgspk=bdl

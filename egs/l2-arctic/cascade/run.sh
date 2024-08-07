@@ -16,6 +16,7 @@ n_jobs=16      # number of parallel jobs in feature extraction
 conf=conf/vtn.tts_pt.v1.yaml
 
 # dataset configuration
+
 arctic_db_root=/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads      # default saved here
 db_root=/home/kevingenghaopeng/data/l2arctic_release_v5.0 # PLEASE CHANGE THIS
 dumpdir=dump                                    # directory to dump full features
@@ -314,6 +315,7 @@ if [ "${stage}" -le 6 ] && [ "${stop_stage}" -ge 6 ]; then
                 --trg-stats "${npvc_stats}" \
                 --outdir "${outdir}/${new_name}/" \
                 --verbose "${verbose}"
+
         echo "Successfully finished decoding of ${name} set."
     ) &
     pids+=($!) # store background pids

@@ -43,3 +43,12 @@ train_max_steps: 50000                 # Number of training steps.
 save_interval_steps: 5000               # Interval steps to save checkpoint.
 eval_interval_steps: 100               # Interval steps to evaluate the network.
 log_interval_steps: 10                 # Interval steps to record the training log.
+
+###########################################################
+#                      LOSS SETTING                       #
+###########################################################
+trainer_type: ARVCTrainer
+collater_type: ARVCCollater
+criterions:
+    "Seq2SeqLoss":
+        bce_pos_weight: 10.0

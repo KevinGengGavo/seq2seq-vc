@@ -86,10 +86,16 @@ lambda_align: 2.0
 ###########################################################
 #                   INFERENCE SETTING                     #
 ###########################################################
+# vocoder:
+#     checkpoint: ../vc1/downloads/pwg_slt/checkpoint-400000steps.pkl
+#     config: ../vc1/downloads/pwg_slt/config.yml
+#     stats: ../vc1/downloads/pwg_slt/stats.h5
+
 vocoder:
-    checkpoint: ../vc1/downloads/pwg_slt/checkpoint-400000steps.pkl
-    config: ../vc1/downloads/pwg_slt/config.yml
-    stats: ../vc1/downloads/pwg_slt/stats.h5
+    vocoder_type: "s3prl_vc"
+    checkpoint: "./downloads/ppg_sxliu_decoder_V006/checkpoint-38000steps.pkl"
+    stats: "./downloads/ppg_sxliu_decoder_V006/stats.h5"
+    config: "./downloads/ppg_sxliu_decoder_V006/config.yml"
 
 ###########################################################
 #                  DATA LOADER SETTING                    #

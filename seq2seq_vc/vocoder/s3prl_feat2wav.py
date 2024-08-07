@@ -37,7 +37,6 @@ class S3PRL_Feat2Wav(object):
                 self.device
             ),
         }
-
         # get model and load parameters
         upstream_model = get_upstream(self.config["upstream"])
         upstream_featurizer = Featurizer(upstream_model)
@@ -56,7 +55,6 @@ class S3PRL_Feat2Wav(object):
         model = model.eval().to(device)
         self.model = model
         logging.info(f"Loaded S3PRL model parameters from {checkpoint}.")
-
         if self.config.get("vocoder", None) is not None:
             self.vocoder = Vocoder(
                 self.config["vocoder"]["checkpoint"],
@@ -85,6 +83,7 @@ class S3PRL_Feat2Wav(object):
 
         start = time.time()
         outs, _ , _ = self.model(c, lens, spk_embs=None) # outs: if use diffusion / TACO2 model, return 3 variables
+        # import pdb; pdb.set_trace()
         out = outs[0]
         y, sr = self.vocoder.decode(out)
         rtf = (time.time() - start) / (len(y) / self.config["sampling_rate"])

@@ -32,7 +32,10 @@ def _calculate_asr_score(model, device, file_list, groundtruths):
 
     for i, cvt_wav_path in enumerate(tqdm(file_list)):
         basename = get_basename(cvt_wav_path)
-        groundtruth = groundtruths[basename] # get rid of the first character "E"
+        try:
+            groundtruth = groundtruths[basename] # get rid of the first character "E"
+        except:
+            import pdb; pdb.set_trace()
         
         # load waveform
         wav, _ = librosa.load(cvt_wav_path, sr=16000)
@@ -124,6 +127,7 @@ def main():
     # load ground truth transcriptions
     with open(transcription_path, "r") as f:
         lines = f.read().splitlines()
+
     groundtruths = {line.split(" ")[1]: " ".join(line.split(" ")[2:-1]).replace('"', '') for line in lines}
 
     # load segments if provided
@@ -132,7 +136,8 @@ def main():
             lines = f.read().splitlines()
         segments = {}
         for line in lines:
-            _id, _, start, end = line.split(" ")
+            # _id, _, start, end = line.split(" ")
+            _id, start, end = line.split(" ")
             segments[_id] = {
                 "offset": float(start),
                 "duration": float(end) - float(start)

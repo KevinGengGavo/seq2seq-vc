@@ -11,7 +11,7 @@ fi
 
 MAIN_ROOT=$PWD/../../..
 export PATH=$MAIN_ROOT/seq2seq_vc/bin:$PATH
-
+export PATH=$MAIN_ROOT/ppg-vc:$PATH
 # python related
 export OMP_NUM_THREADS=1
 export PYTHONIOENCODING=UTF-8
