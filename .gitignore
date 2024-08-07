@@ -136,3 +136,13 @@ dump_temp/
 data_temp/
 icassp2024_exps/
 *.done
+
+# pics
+*.png
+*.jpg
+
+# debug dir
+**/debug/
+
+# yaml
+*.yaml

@@ -20,7 +20,7 @@ format: "hdf5"           # Feature file format. "npy" or "hdf5" is supported.
 feat_list:
     mel: {}
     ppg_sxliu:
-        checkpoint: "/data/group1/z44476r/Experiments/s3prl-vc/egs/ljspeech/a2o_vc/exp/ppg_sxliu_taco2_ar/checkpoint-50000steps.pkl"
+        checkpoint: "/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads/s3prl-vc-ppg_sxliu/checkpoint-50000steps.pkl"
 
 src_feat: ppg_sxliu
 trg_feat: ppg_sxliu
@@ -64,9 +64,9 @@ criterions:
 ###########################################################
 vocoder:
     vocoder_type: "s3prl_vc"
-    checkpoint: "/data/group1/z44476r/Experiments/s3prl-vc/egs/arctic/a2o_vc/exp/slt_ppg_sxliu_taco2_ar/checkpoint-50000steps.pkl"
-    stats: "/data/group1/z44476r/Experiments/s3prl-vc/egs/arctic/a2o_vc/exp/slt_ppg_sxliu_taco2_ar/stats.h5"
-    config: "/data/group1/z44476r/Experiments/s3prl-vc/egs/arctic/a2o_vc/exp/slt_ppg_sxliu_taco2_ar/config.yml"
+    checkpoint: "/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads/s3prl-vc-ppg_sxliu/checkpoint-50000steps.pkl"
+    stats: "/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads/s3prl-vc-ppg_sxliu/stats.h5"
+    config: "/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads/s3prl-vc-ppg_sxliu/config.yml"
 inference:
     threshold: 0.5    # threshold to stop the generation
     maxlenratio: 6.0 # maximum length of generated samples = input length * maxlenratio

@@ -85,19 +85,19 @@ lambda_align: 2.0
 #                   INFERENCE SETTING                     #
 ###########################################################
 vocoder:
-    checkpoint: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc1/exp/train_nodev_parallel_wavegan.v1/checkpoint-400000steps.pkl
-    config: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc1/exp/train_nodev_parallel_wavegan.v1/config.yml
-    stats: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc1/exp/train_nodev_parallel_wavegan.v1/stats.h5
+    checkpoint: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/checkpoint-400000steps.pkl
+    config: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/config.yml
+    stats: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/stats.h5
 
 ###########################################################
 #                  DATA LOADER SETTING                    #
 ###########################################################
-batch_size: 2                   # Batch size.
+batch_size: 4                  # Batch size.
 pin_memory: true                # Whether to pin memory in Pytorch DataLoader.
 num_workers: 0                  # Number of workers in Pytorch DataLoader.
 allow_cache: true               # Whether to allow cache in dataset. If true, it requires cpu memory.
 mp: false                       # Setting this to false avoids error in multi-gpu machines.
-gradient_accumulate_steps: 2    # Number of forward steps before a backward step. Used when OOM happens.
+gradient_accumulate_steps: 4    # Number of forward steps before a backward step. Used when OOM happens.
 
 ###########################################################
 #             OPTIMIZER & SCHEDULER SETTING               #
@@ -116,7 +116,7 @@ scheduler_params:
 train_max_steps: 100000                 # Number of training steps.
 dp_train_start_steps: 0                 # Duration predictor training starting step. Default set to 0.
 save_interval_steps: 500               # Interval steps to save checkpoint.
-eval_interval_steps: 100                # Interval steps to evaluate the network.
+eval_interval_steps: 100               # Interval steps to evaluate the network.
 log_interval_steps: 10                  # Interval steps to record the training log.
 
 ###########################################################

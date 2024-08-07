@@ -10,3 +10,7 @@ rms:
 slt:
   f0min: 120
   f0max: 275
+  
+TXHC:
+  f0min: 70
+  f0max: 300

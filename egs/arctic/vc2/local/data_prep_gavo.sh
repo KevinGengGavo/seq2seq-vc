@@ -7,9 +7,9 @@
 # shellcheck disable=SC1091
 . ./path.sh || exit 1;
 
-num_dev=4
-num_eval=5
-num_train=50
+num_dev=395
+num_eval=300
+num_train=2000
 train_set="train_nodev"
 dev_set="dev"
 eval_set="eval"
@@ -39,15 +39,15 @@ fi
 
 set -euo pipefail
 
-# check speaker
-available_spks=(
-    "V000" "V001_SS" "V001_S1" "V001_S2" "B119004" "V001_SS_B119004"
-)
-if ! echo "${available_spks[*]}" | grep -q "${spk}"; then
-    echo "Specified speaker ${spk} is not available."
-    echo "Available speakers: ${available_spks[*]}"
-    exit 1
-fi
+# # check speaker
+# available_spks=(
+#     "V000" "V001_SS" "V001_S1" "V001_S2" "B119004" "V001_SS_B119004" "V006_SS_B119004" "V001_S1_B119004" "V006_S1_B119004" "V006_SS_max" "V001_SS_max"
+# )
+# if ! echo "${available_spks[*]}" | grep -q "${spk}"; then
+#     echo "Specified speaker ${spk} is not available."
+#     echo "Available speakers: ${available_spks[*]}"
+#     exit 1
+# fi
 
 [ ! -e "${data_dir}/all" ] && mkdir -p "${data_dir}/all"
 
@@ -68,7 +68,7 @@ done
 # make segments
 python local/vad.py --scp_file "${scp}" \
                     --vad_dir "${data_dir}/all/vad/" \
-                    --n_workers 2 \
+                    --n_workers 16 \
                     --segments_path "${data_dir}/all/segments" \
 
 # # check

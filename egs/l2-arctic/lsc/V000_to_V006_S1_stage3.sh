@@ -13,15 +13,17 @@ verbose=1      # verbosity level (lower is less info)
 n_gpus=1       # number of gpus in training
 n_jobs=16      # number of parallel jobs in feature extraction
 
-conf=conf/vtn.tts_pt.v1.ppg_sxliu.yaml
+conf=/home/kevingenghaopeng/vc/seq2seq-vc/egs/l2-arctic/lsc/conf/vtn.tts_pt.v1.ppg_sxliu_V000R_to_V006S1_enc_dec.yaml
 
 # dataset configuration
-arctic_db_root=../../arctic/vc1/downloads       # default saved here
-db_root=/home/kevingenghaopeng/data/l2arctic_release_v5.0 # PLEASE CHANGE THIS
+src_db_root=./downloads/V001_R_max_valid    # default saved here
+trg_db_root=./downloads/V006_S_max_valid  # PLEASE CHANGE THIS
 dumpdir=dump                                    # directory to dump full features
-srcspk=TXHC
-trgspk=bdl
-num_train=1032
+srcspk=V000_R_max_valid
+trgspk=V006_S1_max_valid
+num_train=2000 # out of 2696
+num_dev=395
+num_eval=300
 stats_ext=h5
 norm_name=ljspeech                              # used to specify normalized data.
 
@@ -30,9 +32,12 @@ pretrained_model_checkpoint=downloads/ljspeech_text_to_ppg_sxliu_aept/checkpoint
 npvc_checkpoint=downloads/s3prl-vc-ppg_sxliu/checkpoint-50000steps.pkl
 npvc_name=ppg_sxliu
 
+# fine-tuning related setting
+transfer_learning_model_dir="/home/kevingenghaopeng/vc/seq2seq-vc/egs/l2-arctic/lsc/exp/V000_R_max_valid_V006_SS_max_valid_2000_vtn.tts_pt.v1.ppg_sxliu_V006"
+
 # training related setting
 tag=""     # tag for directory to save model
-resume=""  # checkpoint path to resume training
+resume="/home/kevingenghaopeng/vc/seq2seq-vc/egs/l2-arctic/lsc/exp/V006_S1_max_valid_V006_SS_max_valid_2000_vtn.tts_pt.v1.ppg_sxliu_V006S1_to_V006SS_decoder/checkpoint-60000steps.pkl"  # checkpoint path to resume training
            # (e.g. <path>/<to>/checkpoint-10000steps.pkl)
            
 # decoding related setting
@@ -43,7 +48,7 @@ checkpoint=""               # checkpoint path to be used for decoding
 # shellcheck disable=SC1091
 . utils/parse_options.sh || exit 1;
 
-set -euo pipefail
+# set -euo pipefail
 
 # sanity check for norm_name and pretrained_model_checkpoint
 if [ -z ${norm_name} ]; then
@@ -65,57 +70,25 @@ npvc_stats="${npvc_pretrained_model_dir}/stats.h5"
 npvc_config="${npvc_pretrained_model_dir}/config.yml"
 echo "NPVC pretrained model checkpoint: ${npvc_checkpoint}"
 
-if [ ${stage} -le -1 ] && [ ${stop_stage} -ge -1 ]; then
-    echo "stage -1: Data and Pretrained Model Download"
-
-    # download ARCTIC
-    ../../arctic/vc1/local/data_download.sh ${arctic_db_root} ${trgspk}
-
-    # download pretrained vocoder
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_TXHC/checkpoint-400000steps.pkl"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_TXHC/config.yml"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "pwg_TXHC/stats.h5"
-
-    # download npvc model
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "s3prl-vc-ppg_sxliu/checkpoint-50000steps.pkl"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "s3prl-vc-ppg_sxliu/config.yml"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "s3prl-vc-ppg_sxliu/stats.h5"
-
-    # download decoder model
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "ppg_sxliu_decoder_THXC/checkpoint-10000steps.pkl"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "ppg_sxliu_decoder_THXC/config.yml"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "ppg_sxliu_decoder_THXC/stats.h5"
-
-    # download pretrained seq2seq model
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "ljspeech_text_to_ppg_sxliu_aept/checkpoint-50000steps.pkl"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "ljspeech_text_to_ppg_sxliu_aept/config.yml"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "downloads" --filename "ljspeech_text_to_ppg_sxliu_aept/stats.h5"
-
-    # download pretrained (ready to use) model
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "exp/TXHC_bdl_1032_pretrained" --filename "lsc_THXC_ppg_sxliu/checkpoint-50000steps.pkl"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "exp/TXHC_bdl_1032_pretrained" --filename "lsc_THXC_ppg_sxliu/config.yml"
-    utils/hf_download.py --repo_id "unilight/accent-conversion-2023" --outdir "exp/TXHC_bdl_1032_pretrained" --filename "lsc_THXC_ppg_sxliu/stats.h5"
-fi
-
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     echo "stage 0: Data preparation"
     echo "Preparing target speaker ${trgspk}"
-    ../../arctic/vc1/local/data_prep.sh \
+    ../../arctic/vc1/local/data_prep_gavo.sh \
         --train_set "${trgspk}_train_${num_train}" \
         --dev_set "${trgspk}_dev" \
         --eval_set "${trgspk}_eval" \
         --num_train ${num_train} \
-        --num_dev 50 --num_eval 50 \
-        "${arctic_db_root}/cmu_us_${trgspk}_arctic" "${trgspk}" data
+        --num_dev ${num_dev} --num_eval  ${num_eval}\
+        "${trg_db_root}" "${trgspk}" data
 
     echo "Preparing source speaker ${srcspk}"
-    ../cascade/local/data_prep.sh \
+    ../../arctic/vc1/local/data_prep_gavo.sh \
         --train_set "${srcspk}_train_${num_train}" \
         --dev_set "${srcspk}_dev" \
         --eval_set "${srcspk}_eval" \
         --num_train ${num_train} \
-        --num_dev 50 --num_eval 50 \
-        "${db_root}/${srcspk}" "${srcspk}" data
+        --num_dev  ${num_dev} --num_eval ${num_eval} \
+        "${src_db_root}" "${srcspk}" data
 fi
 
 if [ "${stage}" -le 1 ] && [ "${stop_stage}" -ge 1 ]; then
@@ -287,7 +260,7 @@ if [ ${stage} -le 5 ] && [ ${stop_stage} -ge 5 ]; then
         ${cuda_cmd} --gpu "${n_gpus}" "${outdir}/${name}/evaluation.log" \
             ../cascade/local/evaluate.py \
                 --wavdir "${outdir}/${name}" \
-                --data_root "${arctic_db_root}/cmu_us_${trgspk}_arctic" \
+                --data_root "${trg_db_root}" \
                 --trgspk ${trgspk} \
                 --f0_path "conf/f0.yaml" \
                 --asr

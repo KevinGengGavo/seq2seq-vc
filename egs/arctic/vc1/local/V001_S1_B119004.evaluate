@@ -1,0 +1,8 @@
+number of utterances = 59
+Calculating ASR-based score...
+[INFO]: Load the pre-trained ASR by facebook/wav2vec2-large-960h-lv60-self.
+> /home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/local/evaluate_gavo.py(50)_calculate_asr_score()
+-> for k in keys:
+(Pdb) --KeyboardInterrupt--
+(Pdb) --KeyboardInterrupt--
+(Pdb) 

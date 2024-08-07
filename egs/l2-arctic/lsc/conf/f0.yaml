@@ -10,3 +10,27 @@ rms:
 slt:
   f0min: 120
   f0max: 275
+
+V001_S1_max_valid:
+  f0min: 100
+  f0max: 400
+
+V001_S1_max_valid:
+  f0min: 120
+  f0max: 400
+
+V001_SS_max_valid:
+  f0min: 120
+  f0max: 400
+
+V006_S1_max_valid:
+  f0min: 50
+  f0max: 350
+  
+V006_SS_max_valid:
+  f0min: 50
+  f0max: 350
+
+V000_R_max_valid:
+  f0min: 50
+  f0max: 450

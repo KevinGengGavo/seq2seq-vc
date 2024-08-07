@@ -13,7 +13,7 @@ verbose=1      # verbosity level (lower is less info)
 n_gpus=1       # number of gpus in training
 n_jobs=16      # number of parallel jobs in feature extraction
 
-conf=./conf/vtn.tts_pt.v1.yaml
+conf=./conf/vtn.v1.yaml
 
 # dataset configuration
 db_root=../../../../../data/cmu_arctic
@@ -22,14 +22,15 @@ srcspk=clb                # available speakers: "clb" "bdl"
 trgspk=slt                  # available speakers: "slt" "rms"
 num_train=932
 stats_ext=h5
-norm_name="ljspeech"                  # used to specify normalized data.
+norm_name="self"                  # used to specify normalized data.
                             # Ex: `judy` for normalization with pretrained model, `self` for self-normalization
 src_feat=mel
 trg_feat=mel
 
 # pretrained model related
-# pretrained_model_checkpoint=
+# pretrained_model_checkpoint=""
 pretrained_model_checkpoint=downloads/pretrained_models/ljspeech/transformer_tts_aept/checkpoint-50000steps.pkl # r2
+# pretrained_model_checkpoint="/home/kevingenghaopeng/vc/seq2seq-vc/egs/arctic/vc1/downloads/s3prl-vc-ppg_sxliu/checkpoint-50000steps.pkl"
 # pretrained_model_checkpoint=/data/group1/z44476r/Experiments/seq2seq-vc/egs/ljspeech/tts1/exp/tts_aept_phn_tacotron_r1_checkpoint-100000steps/checkpoint-50000steps.pkl # r1
 # pretrained_model_checkpoint=/data/group1/z44476r/Experiments/seq2seq-vc/egs/ljspeech/tts1/exp/tts_aept_phn_tacotron_r4_checkpoint-100000steps/checkpoint-50000steps.pkl # r4
 

@@ -13,14 +13,14 @@ verbose=1      # verbosity level (lower is less info)
 n_gpus=1       # number of gpus in training
 n_jobs=4      # number of parallel jobs in feature extraction
 
-conf=conf/vtn.tts_pt.gavoB119004_V001_SS.yaml
+conf=./conf/vtn.tts_pt.gavoV006_V001_SS.yaml
 
 # dataset configuration
 db_root=./downloads
 dumpdir=dump                # directory to dump full features
-srcspk=B119004                  # available speakers: "B119004"
-trgspk=V001_SS_B119004                  # available speakers: "V001_SS_B119004"
-num_train=40
+srcspk=V006_SS_max                # available speakers: "B119004"
+trgspk=V001_SS_max                  # available speakers: "V001_SS_B119004"
+num_train=3000
 stats_ext=h5
 norm_name='ljspeech'                  # used to specify normalized data.
                             # Ex: `ljspeech` for normalization with pretrained model, `self` for self-normalization
@@ -39,7 +39,8 @@ resume=""  # checkpoint path to resume training
            # (e.g. <path>/<to>/checkpoint-10000steps.pkl)
            
 # decoding related setting
-checkpoint=""               # checkpoint path to be used for decoding
+checkpoint=""
+    # "./exp/V001_SS_B119004_V001_S1_B119004_40_vtn.tts_pt.gavoB119004_V001_SS/checkpoint-20000steps.pkl"               # checkpoint path to be used for decoding
                             # if not provided, the latest one will be used
                             # (e.g. <path>/<to>/checkpoint-400000steps.pkl)
 
@@ -311,9 +312,10 @@ if [ ${stage} -le 5 ] && [ ${stop_stage} -ge 5 ]; then
         name="${srcspk}_${_set}"
         echo "Evaluation start. See the progress via ${outdir}/${name}/evaluation.log."
         ${cuda_cmd} --gpu "${n_gpus}" "${outdir}/${name}/evaluation.log" \
-            local/evaluate.py \
+            local/evaluate_gavo.py \
                 --wavdir "${outdir}/${name}" \
-                --data_root "${db_root}/cmu_us_${trgspk}_arctic" \
+                --data_root "${db_root}/${trgspk}" \
+                --transcription "text" \
                 --trgspk ${trgspk} \
                 --f0_path "conf/f0.yaml" \
                 --segments "data/${trgspk}_${_set}/segments" \

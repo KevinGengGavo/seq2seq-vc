@@ -9,7 +9,7 @@ freeze-mods: null
 #                   INFERENCE SETTING                     #
 ###########################################################
 vocoder:
-    checkpoint: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/checkpoint-250000steps.pkl
+    checkpoint: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/checkpoint-400000steps.pkl
     config: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/config.yml
     stats: /home/kevingenghaopeng/vocoder/ParallelWaveGAN/egs/V001/voc_all/exp/train_nodev_parallel_wavegan.v1/stats.h5
 inference:

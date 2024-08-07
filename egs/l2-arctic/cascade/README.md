@@ -1,3 +1,6 @@
+## Working Dir
++ /home/kevingenghaopeng/vc/seq2seq-vc/egs/l2-arctic/cascade/exp/TXHC_bdl_1032_stft_view_as_real
+
 # Cascade method for foreign accent conversion on the L2-ARCTIC and ARCTIC datasets
 
 There are two stages during **inference** in the cascade method.
